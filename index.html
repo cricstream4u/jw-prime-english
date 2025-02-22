@@ -157,7 +157,7 @@
     <div id="jwplayerDiv"></div>
     <script>
         // Directly set the MPD stream URL
-        const mpdStreamUrl = "https://aba5sdmaaaaaaaamjyr2xiy4rbicb.otte.live.cf.ww.aiv-cdn.net/pdx-nitro/live/clients/dash/enc/zqhtvqjquq/out/v1/190f1d69a3d5467f8fb7d9df4339bc49/cenc.mpd";
+        const mpdStreamUrl = "https://aba5sdmaaaaaaaamjyr2xiy4rbicb.otte.live.cf.ww.aiv-cdn.net/pdx-nitro/live/clients/dash/enc/zqhtvqjquq/out/v1/190f1d69a3d5467f8fb7d9df4339bc49/cenc.mpd?drmScheme=clearkey&drmLicense=cb8daf414566aa17d06f8294f3f3b444:89d58908a57d70ef87bf16c9b5821ca2";
 
         // Initialize JW Player
         const playerInstance = jwplayer("jwplayerDiv");
@@ -173,7 +173,7 @@
             type: "mpd", // Ensure MPD support
             preload: "auto", // Preload stream for faster playback
             drm: {
-                "clearKey": {
+                "clearkey": {
                     "licenseUrl": "https://cb8daf414566aa17d06f8294f3f3b444:89d58908a57d70ef87bf16c9b5821ca2"
                 }
             },
