@@ -19,6 +19,7 @@
       #jwplayerDiv {
         width: 100%;
         height: 100%;
+        position: relative; /* This makes the live label position relative to the video player */
       }
 
       #live-label {
@@ -30,7 +31,7 @@
         background-color: rgba(0, 0, 0, 0.4);
         padding: 4px 8px;
         border-radius: 5px;
-        display: block; /* Change to block to make it visible */
+        display: block;
         z-index: 10;
       }
 
@@ -78,7 +79,9 @@
             "key": "89d58908a57d70ef87bf16c9b5821ca2"
           }
         },
-        autostart: true // Enable auto-play
+        autostart: true, // Enable auto-play
+        mute: false, // Unmute the video
+        bufferlength: 5 // Set buffer length (in seconds) to preload some of the stream before playback
       });
     </script>
 
