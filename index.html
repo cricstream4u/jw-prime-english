@@ -156,47 +156,37 @@
 <body>
     <div id="jwplayerDiv"></div>
     <script>
-        // Function to get URL query parameters
-        function getQueryParam(param) {
-            const urlParams = new URLSearchParams(window.location.search);
-            return urlParams.get(param);
-        }
+        // Directly set the MPD stream URL
+        const mpdStreamUrl = "https://aba5sdmaaaaaaaamjyr2xiy4rbicb.otte.live.cf.ww.aiv-cdn.net/pdx-nitro/live/clients/dash/enc/zqhtvqjquq/out/v1/190f1d69a3d5467f8fb7d9df4339bc49/cenc.mpd?drmScheme=clearkey&drmLicense=cb8daf414566aa17d06f8294f3f3b444:89d58908a57d70ef87bf16c9b5821ca2";
 
-        // Retrieve the 'file' parameter from the URL (MPD stream URL)
-        const mpdStreamUrl = getQueryParam("file");
+        // Initialize JW Player
+        const playerInstance = jwplayer("jwplayerDiv");
 
-        if (!mpdStreamUrl) {
-            alert("No MPD stream URL provided. Please add a 'file' parameter to the URL.");
-        } else {
-            // Initialize JW Player
-            const playerInstance = jwplayer("jwplayerDiv");
-
-            // Configure the player with the MPD stream from URL parameter
-            playerInstance.setup({
-                file: mpdStreamUrl,
-                width: "100%",
-                height: "100%",
-                aspectratio: "16:9",
-                autostart: true,
-                mute: false,
-                type: "mpd", // Ensure MPD support
-                preload: "auto", // Preload stream for faster playback
-                drm: {
-                    "clearKey": {
-                        "licenseUrl": "https://cb8daf414566aa17d06f8294f3f3b444:89d58908a57d70ef87bf16c9b5821ca2"
-                    }
-                },
-                cast: {
-                    appid: "CC1AD845" // Chromecast App ID (optional)
+        // Configure the player with the MPD stream directly
+        playerInstance.setup({
+            file: mpdStreamUrl,
+            width: "100%",
+            height: "100%",
+            aspectratio: "16:9",
+            autostart: true,
+            mute: false,
+            type: "mpd", // Ensure MPD support
+            preload: "auto", // Preload stream for faster playback
+            drm: {
+                "clearKey": {
+                    "licenseUrl": "https://cb8daf414566aa17d06f8294f3f3b444:89d58908a57d70ef87bf16c9b5821ca2"
                 }
-            });
+            },
+            cast: {
+                appid: "CC1AD845" // Chromecast App ID (optional)
+            }
+        });
 
-            // Optional: Handle player errors gracefully
-            playerInstance.on('error', function(error) {
-                console.error("Error loading stream:", error.message);
-                alert("Failed to load the stream. Please check the URL and try again.");
-            });
-        }
+        // Optional: Handle player errors gracefully
+        playerInstance.on('error', function(error) {
+            console.error("Error loading stream:", error.message);
+            alert("Failed to load the stream. Please check the URL and try again.");
+        });
     </script>
 
     <center>
