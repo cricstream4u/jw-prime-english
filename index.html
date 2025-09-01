@@ -1,64 +1,53 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="shortcut icon" type="image/x-icon" href="Cric stream Favicon.jpg">
-    <title>TG-@cric_stream</title>
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <link rel="stylesheet" href="https://xyzts.pages.dev/style.css">
-    <script src="//content.jwplatform.com/libraries/SAHhwvZq.js"></script>
-    <style>
-      body {
-        margin: 0px;
-        padding-top: 5px;
-        font-family: Arial, sans-serif;
-        width: 100%;
-      }
+<head>
+  <meta charset="UTF-8" />
+  <title>Plyr HLS Streaming</title>
+  <link rel="stylesheet" href="https://cdn.plyr.io/3.7.8/plyr.css" />
+  <style>
+    body {
+      max-width: 800px;
+      margin: 20px auto;
+      background: #000;
+    }
+    video {
+      width: 100%;
+      height: auto;
+    }
+  </style>
+</head>
+<body>
 
-      #jwplayerDiv {
-        width: 100%;
-        height: 100%;
-        position: relative; /* This makes the live label position relative to the video player */
-      }
+  <video id="player" controls crossorigin playsinline></video>
 
-     
-    </style>
-  </head>
-  <body>
-    <div id="jwplayerDiv">
-    </div>
+  <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
+  <script src="https://cdn.plyr.io/3.7.8/plyr.polyfilled.js"></script>
 
-    <script type="text/javascript">
-      
-      jwplayer("jwplayerDiv").setup({
-        file: "https://otte.live.cf.ww.aiv-cdn.net/pdx-nitro/live/clients/dash/enc/tsrm0zirxz/out/v1/190f1d69a3d5467f8fb7d9df4339bc49/cenc.mpd",
-        position: 'bottom',
-        type: "dash",
-        drm: {
-          "clearkey": {
-            "keyId": "9cb6b6283487afe392adcffebf3cd6be",
-            "key": "05f4eb67381e0c173954603518ce84c3"
-          }
-        },
-        autostart: true, // Enable auto-play
-        mute: false, // Unmute the video
-        image: "WhatsApp Image 2025-02-22 at 5.19.53 PM.jpeg" // Replace with your thumbnail image URL
+  <script>
+    const video = document.getElementById('player');
+    const source = 'https://jdou5wo6ffta.acek-cdn.com/hls2/01/06223/e85ww2zrhvvj_h/master.m3u8?t=hEJ4NRmAlCJcHulyAXs0mgW2ANiBzPmY9hwrJeboi0A&s=1756762667&e=129600&f=31115563&srv=pmjx9cjae94d&i=0.4&sp=500&p1=pmjx9cjae94d&p2=pmjx9cjae94d&asn=55836';
 
+    if (Hls.isSupported()) {
+      const hls = new Hls();
+      hls.loadSource(source);
+      hls.attachMedia(video);
+      hls.on(Hls.Events.MANIFEST_PARSED, function() {
+        video.play();
       });
-    </script>
+    } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
+      // Some browsers (Safari) support HLS natively
+      video.src = source;
+      video.addEventListener('loadedmetadata', () => {
+        video.play();
+      });
+    } else {
+      alert('Your browser does not support HLS.');
+    }
 
-    <center>
-      <!-- BEGIN: Powered by Supercounters.com -->
-      <center><script type="text/javascript" src="//widget.supercounters.com/ssl/online_t.js"></script><script type="text/javascript">sc_online_t(1707487,"Users Online","170ddb");</script><br><noscript><a href="https://www.supercounters.com/">supercounters.com</a></noscript>
-      </center>
-      <!-- END: Powered by Supercounters.com -->
-    </center>
+    const player = new Plyr(video, {
+      // Optional Plyr config here
+    });
+  </script>
 
-    <div style="background-color: #0074d9; text-align: center; padding: 10px;">
-      <a href="https://t.me/cric_stream" target="_blank">
-        <button id="joinTelegramButton">Join Telegram</button>
-      </a>
-    </div>
-  </body>
+</body>
 </html>
