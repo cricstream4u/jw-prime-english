@@ -2,51 +2,66 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>Plyr HLS Streaming</title>
+  <title>Plyr with Language and Subtitles</title>
   <link rel="stylesheet" href="https://cdn.plyr.io/3.7.8/plyr.css" />
   <style>
-    body {
-      max-width: 800px;
-      margin: 20px auto;
-      background: #000;
-    }
-    video {
-      width: 100%;
-      height: auto;
+    #language-select {
+      margin: 10px;
+      padding: 5px;
+      font-size: 16px;
     }
   </style>
 </head>
 <body>
 
-  <video id="player" controls crossorigin playsinline></video>
+  <video id="player" controls crossorigin playsinline>
+    <track kind="subtitles" label="English" srclang="en" src="subs-en.vtt" default />
+    <track kind="subtitles" label="Spanish" srclang="es" src="subs-es.vtt" />
+  </video>
+
+  <select id="language-select"></select>
 
   <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
   <script src="https://cdn.plyr.io/3.7.8/plyr.polyfilled.js"></script>
 
   <script>
     const video = document.getElementById('player');
-    const source = 'https://jdou5wo6ffta.acek-cdn.com/hls2/01/06223/e85ww2zrhvvj_h/master.m3u8?t=hEJ4NRmAlCJcHulyAXs0mgW2ANiBzPmY9hwrJeboi0A&s=1756762667&e=129600&f=31115563&srv=pmjx9cjae94d&i=0.4&sp=500&p1=pmjx9cjae94d&p2=pmjx9cjae94d&asn=55836';
+    const languageSelect = document.getElementById('language-select');
+    const source = 'YOUR_HLS_LINK_WITH_MULTIPLE_AUDIO_TRACKS.m3u8';
 
     if (Hls.isSupported()) {
       const hls = new Hls();
       hls.loadSource(source);
       hls.attachMedia(video);
-      hls.on(Hls.Events.MANIFEST_PARSED, function() {
-        video.play();
+
+      hls.on(Hls.Events.MANIFEST_PARSED, () => {
+        const player = new Plyr(video);
+
+        // Populate audio tracks dropdown
+        hls.audioTracks.forEach((track, index) => {
+          const option = document.createElement('option');
+          option.value = index;
+          option.textContent = track.name || `Language ${index + 1}`;
+          languageSelect.appendChild(option);
+        });
+
+        // Set default audio track
+        if(hls.audioTracks.length > 0) {
+          languageSelect.value = 0;
+          hls.audioTrack = 0;
+        }
+
+        // Change audio track on select change
+        languageSelect.addEventListener('change', e => {
+          hls.audioTrack = e.target.value;
+        });
       });
     } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
-      // Some browsers (Safari) support HLS natively
       video.src = source;
-      video.addEventListener('loadedmetadata', () => {
-        video.play();
-      });
+      const player = new Plyr(video);
     } else {
-      alert('Your browser does not support HLS.');
+      alert('HLS not supported');
     }
-
-    const player = new Plyr(video, {
-      // Optional Plyr config here
-    });
   </script>
 
 </body>
